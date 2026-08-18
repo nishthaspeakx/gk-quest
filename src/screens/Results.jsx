@@ -94,10 +94,11 @@ export default function Results() {
             ))}
           </div>
 
-          {/* Rewards */}
+          {/* Rewards — one clear currency: coins earned this quest + your new
+              wallet total. (The same amount also fills the level bar below.) */}
           <div className="grid grid-cols-2 gap-3">
-            <Reward label="XP earned" value={`+${summary.xpEarned}`} tone="bg-brand-mist text-brand-purple" />
-            <Reward label="Coins" value={`+${summary.coinsEarned} 💰`} tone="bg-amber-50 text-brand-orange" />
+            <Reward label="Coins earned" value={`+${summary.coinsEarned} 💰`} tone="bg-amber-50 text-brand-orange" />
+            <Reward label="Total coins" value={`${summary.totalCoins} 💰`} tone="bg-brand-mist text-brand-purple" />
           </div>
 
           {summary.isReplay && (

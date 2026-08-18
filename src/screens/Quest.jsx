@@ -124,7 +124,7 @@ export default function Quest() {
       setCorrect(ok)
       setBreakdown(result)
       setPhase('feedback')
-      setScore((s) => s + result.points)
+      setScore((s) => s + result.coins)
       setStreak(newStreak)
       bestComboRef.current = Math.max(bestComboRef.current, newStreak)
       const topic = question.topic || 'General'
@@ -175,7 +175,7 @@ export default function Quest() {
           day: Number(day),
           correctCount,
           total: questions.length,
-          xp: score,
+          questCoins: score,
           bestCombo: bestComboRef.current,
           fastCount: fastCountRef.current,
           topicBreakdown: topicRef.current,
@@ -269,9 +269,9 @@ export default function Quest() {
             </p>
             <p className="text-xs on-bg-muted truncate">{data.theme}</p>
           </div>
-          {/* In-quiz running score is POINTS (⭐), not spendable coins (💰) — keep
-              them visually distinct so kids don't confuse the two. */}
-          <span className="pill bg-brand-purple">⭐ {score}</span>
+          {/* The number climbing here IS your coins — exactly what you can spend
+              in the Shop. It also fills your level bar. One clear currency. */}
+          <span className="pill bg-brand-purple">💰 {score}</span>
           {streak >= 2 && <span className="pill bg-brand-orange">🔥 {streak}</span>}
         </div>
 
@@ -316,9 +316,9 @@ export default function Quest() {
                   ${correct ? 'bg-brand-green' : 'bg-brand-coral'}`}
               >
                 <span>{correct ? '🎉 Correct!' : '💛 Good try!'}</span>
-                {correct && breakdown?.points > 0 && (
+                {correct && breakdown?.coins > 0 && (
                   <span className="text-base">
-                    +{breakdown.points}
+                    +{breakdown.coins} 💰
                     {breakdown.bonus > 0 && <span className="opacity-90"> · ⚡{breakdown.bonus}</span>}
                     {breakdown.multiplier > 1 && <span className="opacity-90"> · ×{breakdown.multiplier}</span>}
                   </span>

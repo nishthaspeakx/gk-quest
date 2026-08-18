@@ -1,16 +1,18 @@
-// Scoring engine for GK Quest.
-// Correct answers earn base points, a small speed bonus for answering quickly,
-// and a combo multiplier that grows with consecutive correct answers.
+// Reward engine for GK Quest — ONE currency: COINS.
+//
+// Every correct answer earns coins: a base amount, plus a small speed bonus for
+// answering quickly, multiplied by a combo that grows with consecutive correct
+// answers. The coins you watch climb during a quest are EXACTLY what you can
+// spend in the Shop — and the same total also fills your level bar (XP = the
+// lifetime coins you have earned). No confusing second number.
 
-export const BASE_POINTS = 100
-export const MAX_SPEED_BONUS = 50
+export const BASE_COINS = 10
+export const MAX_SPEED_BONUS = 5
 // Answer within this many ms for the full speed bonus; it fades linearly to 0.
 export const SPEED_WINDOW_MS = 8000
 
-// Coins are the spendable currency (XP is the permanent score that drives levels).
-export const COINS_PER_CORRECT = 5
-// Extra coins for the quest's star rating (index by star count 0–3).
-export const STAR_COIN_BONUS = { 0: 0, 1: 10, 2: 25, 3: 50 }
+// Extra coins awarded at the end of a quest for its star rating (0–3 stars).
+export const STAR_COIN_BONUS = { 0: 0, 1: 25, 2: 60, 3: 120 }
 
 // `streak` = number of consecutive correct answers INCLUDING the current one.
 // 1–2 in a row -> 1x, 3–4 -> 2x, 5+ -> 3x.
@@ -20,23 +22,24 @@ export function comboMultiplier(streak) {
   return 1
 }
 
-// Faster answers earn a bigger bonus (0 once the window has passed).
+// Faster answers earn a small bonus (0 once the window has passed).
 export function speedBonus(elapsedMs) {
   if (elapsedMs >= SPEED_WINDOW_MS) return 0
   const fraction = 1 - elapsedMs / SPEED_WINDOW_MS
-  return Math.round((MAX_SPEED_BONUS * fraction) / 5) * 5 // round to nearest 5, looks tidy
+  return Math.round(MAX_SPEED_BONUS * fraction)
 }
 
-// Returns a full breakdown so the feedback screen can show "+150  🔥 2×".
+// Coins for a single answer, with a full breakdown for the feedback banner
+// (e.g. "+30 💰  ⚡5  ×2").
 export function scoreForAnswer({ correct, streak, elapsedMs }) {
   if (!correct) {
-    return { points: 0, base: 0, bonus: 0, multiplier: 1 }
+    return { coins: 0, base: 0, bonus: 0, multiplier: 1 }
   }
   const multiplier = comboMultiplier(streak)
-  const base = BASE_POINTS
+  const base = BASE_COINS
   const bonus = speedBonus(elapsedMs)
-  const points = (base + bonus) * multiplier
-  return { points, base, bonus, multiplier }
+  const coins = (base + bonus) * multiplier
+  return { coins, base, bonus, multiplier }
 }
 
 // Star rating for a whole quest, based on the share of correct answers.

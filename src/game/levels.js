@@ -1,20 +1,21 @@
 // The growth ladder: XP thresholds and rank titles from the app plan.
 // Thresholds are tunable — edit the `xp` values to rebalance progression.
 
-// Thresholds re-tuned so a single strong day no longer skips several ranks and
-// the Rookie→Grandmaster climb lasts across the full 90-day journey. Early ranks
-// still come quickly (a good first day or two → Explorer/Scout) for motivation;
-// later ranks take sustained play. Tune freely.
+// XP = the lifetime coins the player has earned (coins are the one currency;
+// spending them in the shop does NOT lower XP). Thresholds are tuned to that
+// coin scale: a good first day (~400–500 coins) reaches Explorer for an early
+// win, while Grandmaster takes sustained play across the 90-day journey. Tune
+// freely — just keep them rising.
 export const RANKS = [
   { level: 1, title: 'GK Rookie', emoji: '🐣', xp: 0 },
-  { level: 2, title: 'GK Explorer', emoji: '🧭', xp: 700 },
-  { level: 3, title: 'GK Scout', emoji: '🔭', xp: 1800 },
-  { level: 4, title: 'GK Whiz', emoji: '💡', xp: 3500 },
-  { level: 5, title: 'GK Star', emoji: '🌟', xp: 6000 },
-  { level: 6, title: 'GK Expert', emoji: '🎓', xp: 9500 },
-  { level: 7, title: 'GK Master', emoji: '🏅', xp: 14000 },
-  { level: 8, title: 'GK Champion', emoji: '🏆', xp: 20000 },
-  { level: 9, title: 'GK Grandmaster', emoji: '👑', xp: 28000 },
+  { level: 2, title: 'GK Explorer', emoji: '🧭', xp: 400 },
+  { level: 3, title: 'GK Scout', emoji: '🔭', xp: 1200 },
+  { level: 4, title: 'GK Whiz', emoji: '💡', xp: 2500 },
+  { level: 5, title: 'GK Star', emoji: '🌟', xp: 4500 },
+  { level: 6, title: 'GK Expert', emoji: '🎓', xp: 7000 },
+  { level: 7, title: 'GK Master', emoji: '🏅', xp: 10500 },
+  { level: 8, title: 'GK Champion', emoji: '🏆', xp: 15000 },
+  { level: 9, title: 'GK Grandmaster', emoji: '👑', xp: 22000 },
 ]
 
 // Returns the current rank plus progress toward the next one.

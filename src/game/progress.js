@@ -1,4 +1,4 @@
-import { starsForResult, COINS_PER_CORRECT, STAR_COIN_BONUS } from './scoring'
+import { starsForResult, STAR_COIN_BONUS } from './scoring'
 import { levelForXp } from './levels'
 import { updateStreak, streakMilestone } from './streak'
 import { evaluateBadges } from './badges'
@@ -14,11 +14,12 @@ function betterRecord(prev, next) {
 // progress and a finished quest, returns the new progress plus a summary the
 // Results screen displays. `payload` comes from the Quest screen.
 //
-// payload = { day, correctCount, total, xp, bestCombo, fastCount, topicBreakdown }
+// payload = { day, correctCount, total, questCoins, bestCombo, fastCount, topicBreakdown }
+// `questCoins` = coins earned from answers during this quest (before star/streak bonuses).
 export function applyCompletion(prev, payload, today = todayStr()) {
-  const { day, correctCount, total, xp, bestCombo, fastCount, topicBreakdown, topicAttempts } = payload
+  const { day, correctCount, total, questCoins, bestCombo, fastCount, topicBreakdown, topicAttempts } = payload
   const stars = starsForResult(correctCount, total)
-  const record = { stars, score: xp, correctCount, total, bestCombo, playedOn: today }
+  const record = { stars, score: questCoins, correctCount, total, bestCombo, playedOn: today }
 
   // A day counts as the "real" daily quest only the first time it is played
   // (day === currentDay). Replaying an earlier day is practice: it can improve
@@ -31,13 +32,7 @@ export function applyCompletion(prev, payload, today = todayStr()) {
   let summary
 
   if (isDailyQuest) {
-    // --- XP & level ---
-    next.xp = prev.xp + xp
-    const prevLevel = levelForXp(prev.xp)
-    const newLevel = levelForXp(next.xp)
-    const leveledUp = newLevel.level > prevLevel.level
-
-    // --- Streak ---
+    // --- Streak (computed before coins, for the milestone bonus) ---
     const s = updateStreak(
       { streak: prev.streak, lastDate: prev.lastCompletedDate, freezeTokens: prev.freezeTokens },
       today,
@@ -49,10 +44,19 @@ export function applyCompletion(prev, payload, today = todayStr()) {
     const milestone = streakMilestone(next.streak)
     if (milestone?.freezeAwarded) next.freezeTokens += 1
 
-    // --- Coins ---
-    const coinsEarned =
-      correctCount * COINS_PER_CORRECT + (STAR_COIN_BONUS[stars] || 0) + (milestone?.coinBonus || 0)
+    // --- Coins earned (the ONE number) ---
+    // The coins from answers this quest + the star-rating bonus + any streak
+    // milestone bonus. This same amount is added to the spendable wallet AND to
+    // level progress (xp = lifetime coins earned), so the number the child
+    // watched climb during the quest is exactly what they can spend — and it
+    // also fills their level bar.
+    const coinsEarned = questCoins + (STAR_COIN_BONUS[stars] || 0) + (milestone?.coinBonus || 0)
     next.coins = prev.coins + coinsEarned
+    next.xp = prev.xp + coinsEarned
+
+    const prevLevel = levelForXp(prev.xp)
+    const newLevel = levelForXp(next.xp)
+    const leveledUp = newLevel.level > prevLevel.level
 
     // --- Gate advance ---
     next.lastCompletedDate = today
@@ -83,7 +87,7 @@ export function applyCompletion(prev, payload, today = todayStr()) {
       day,
       stars,
       isReplay: false,
-      xpEarned: xp,
+      xpEarned: coinsEarned,
       coinsEarned,
       totalXp: next.xp,
       totalCoins: next.coins,
