@@ -171,7 +171,7 @@ export default function Results() {
             </span>
             {rank.next && (
               <span className="text-xs text-slate-400">
-                {rank.into}/{rank.span} XP to {rank.next.title}
+                → {rank.next.title}
               </span>
             )}
           </div>

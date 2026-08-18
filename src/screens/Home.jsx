@@ -97,7 +97,7 @@ export default function Home() {
             <div className="flex justify-between items-baseline">
               <span className="font-display font-extrabold text-slate-800 truncate">{rank.title}</span>
               <span className="text-[11px] text-slate-400 shrink-0 ml-2">
-                {rank.next ? `${rank.into}/${rank.span} XP` : 'Max rank!'}
+                {rank.next ? `→ ${rank.next.title}` : 'Max rank! 👑'}
               </span>
             </div>
             <div className="h-3 rounded-full bg-slate-100 overflow-hidden mt-0.5">
