@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GK Quest — Final 4s Scene</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:100%;height:100%;overflow:hidden;background:#000}
+  .stage{position:relative;width:100vw;height:100vh;overflow:hidden;font-family:'Fredoka',system-ui,sans-serif;
+    perspective:1400px;
+    background:
+      radial-gradient(110% 55% at 50% -8%, #a855f7 0%, transparent 60%),
+      radial-gradient(120% 75% at 118% 112%, #fb923c 0%, transparent 52%),
+      radial-gradient(120% 75% at -18% 112%, #22d3ee 0%, transparent 52%),
+      linear-gradient(160deg,#6d28d9 0%, #7c3aed 45%, #6366f1 100%);}
+  .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.6vh}
+
+  /* ---------- shared phone ---------- */
+  .phone{position:relative;background:#0f172a;border-radius:6.5vh;padding:1vh;
+    box-shadow:0 3vh 6vh -2vh rgba(15,10,50,.72), inset 0 0 0 2px rgba(255,255,255,.16), 0 0 7vh 1vh rgba(250,204,21,.28)}
+  .glass{position:absolute;inset:0;border-radius:6.5vh;pointer-events:none;overflow:hidden}
+  .glass::after{content:"";position:absolute;top:-40%;left:-60%;width:60%;height:180%;
+    background:linear-gradient(105deg,transparent,rgba(255,255,255,.28),transparent);transform:rotate(8deg)}
+  .screen{width:100%;height:100%;border-radius:5.2vh;overflow:hidden;background:linear-gradient(172deg,#7c3aed 0%,#6366f1 100%);
+    color:#fff;display:flex;flex-direction:column;align-items:center;text-align:center;padding:7% 8%}
+  .owl{line-height:1;filter:drop-shadow(0 4px 8px rgba(0,0,0,.25))}
+  .hi{font-family:'Baloo 2';font-weight:800}
+  .sub b{color:#facc15}
+  .cta{background:#facc15;color:#1f2937;font-family:'Baloo 2';font-weight:800;border-radius:1.9vh;box-shadow:0 .7vh 0 0 #eab308}
+
+  /* ---------- SCENE A : onboarding ---------- */
+  .sceneA{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    animation:aOut .5s ease-in forwards;animation-delay:2.5s;transform-style:preserve-3d}
+  .sceneA .phone{height:82vh;aspect-ratio:9/19.3;transform-origin:center;
+    animation:phoneIn 2.5s cubic-bezier(.2,.7,.2,1) both}
+  .sceneA .screen{padding:6% 7% 5%}
+  .sceneA .owl{font-size:6vh;margin-top:6%}
+  .sceneA .hi{font-size:3.2vh;margin-top:3%}
+  .sceneA .sub{font-size:1.6vh;opacity:.94;margin-top:2.5%;line-height:1.3}
+  .sceneA .bullets{width:100%;margin-top:5%;background:rgba(255,255,255,.16);border-radius:1.6vh;padding:5% 6%;text-align:left;display:flex;flex-direction:column;gap:3.2%}
+  .sceneA .bullets div{font-size:1.55vh;line-height:1.22;display:flex;gap:.5em}
+  .sceneA .label{margin-top:5%;font-family:'Baloo 2';font-weight:700;font-size:1.7vh}
+  .sceneA .input{margin-top:2.5%;width:100%;background:#fff;color:#94a3b8;border-radius:1.6vh;padding:3.5% 0;font-size:1.9vh}
+  .sceneA .cta{margin-top:3%;width:100%;font-size:2.1vh;padding:4% 0}
+  .sceneA .skip{margin-top:3%;font-size:1.5vh;text-decoration:underline;opacity:.85}
+
+  @keyframes phoneIn{
+    0%  {transform:rotateY(-26deg) rotateX(6deg) scale(.9) translateY(2vh);opacity:0;filter:blur(4px)}
+    30% {opacity:1;filter:blur(0)}
+    60% {transform:rotateY(-3deg) rotateX(1deg) scale(1)}
+    100%{transform:rotateY(0deg) rotateX(0deg) scale(1.07)}
+  }
+  @keyframes aOut{to{opacity:0;transform:scale(1.15);filter:blur(6px)}}
+
+  /* ---------- golden burst ---------- */
+  .burst{position:absolute;inset:0;display:grid;place-items:center;opacity:0;pointer-events:none;z-index:5;
+    animation:burst .7s ease-out forwards;animation-delay:2.45s}
+  .burst .ring{width:20vh;height:20vh;border-radius:50%;background:radial-gradient(circle,#fde68a 0%,#facc1580 40%,transparent 70%)}
+  @keyframes burst{0%{opacity:0;transform:scale(.2)}35%{opacity:1}100%{opacity:0;transform:scale(4.5)}}
+  @keyframes bIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+  @keyframes bZoom{from{transform:scale(1)}to{transform:scale(1.06)}}
+
+  /* ---------- SCENE B : promo end card ---------- */
+  .sceneB{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.4vh;
+    opacity:0;animation:bIn .7s ease-out forwards, bZoom 2.4s ease-out .7s both;animation-delay:2.6s,3.3s}
+  .sceneB .glowb{position:absolute;z-index:0;width:64vh;height:64vh;border-radius:50%;top:6%;left:50%;transform:translateX(-50%);
+    background:radial-gradient(circle,#facc1566 0%,#ffffff00 60%);filter:blur(4px)}
+  .sceneB .phone{height:52vh;aspect-ratio:9/17.5;transform:rotate(-4deg);z-index:2}
+  .sceneB .screen{padding:7% 8%}
+  .sceneB .owl{font-size:6vh;margin-top:5%}
+  .sceneB .hi{font-size:3.1vh;margin-top:3%}
+  .sceneB .sub{font-size:1.5vh;opacity:.94;margin-top:3%;line-height:1.28}
+  .sceneB .bullets{width:100%;margin-top:5%;background:rgba(255,255,255,.16);border-radius:1.6vh;padding:4.5% 6%;text-align:left;display:flex;flex-direction:column;gap:3.5%}
+  .sceneB .bullets div{font-size:1.5vh;line-height:1.15}
+  .sceneB .cta{margin-top:auto;width:100%;font-size:2.1vh;padding:4.5% 0}
+  .tagline{position:relative;z-index:2;text-align:center;padding:0 6vw}
+  .tagline .l{font-family:'Baloo 2';font-weight:800;color:#fff;line-height:1.1;font-size:4.6vh;text-shadow:0 .4vh 1.6vh rgba(0,0,0,.3)}
+  .tagline .l span{display:block}.l .y{color:#facc15}
+  .logo{position:relative;z-index:2;display:inline-flex;align-items:center;gap:.4em;font-family:'Baloo 2';font-weight:800;color:#fff;font-size:2.7vh;background:rgba(255,255,255,.15);padding:.5em 1.15em;border-radius:999px;box-shadow:0 .7vh 0 rgba(0,0,0,.14)}
+  .cfB{position:absolute;inset:0;pointer-events:none;z-index:1}
+
+  /* floating magical particles (whole scene) */
+  .parts{position:absolute;inset:0;pointer-events:none;z-index:4}
+  .p{position:absolute;border-radius:50%;background:radial-gradient(circle,#fff,#facc15 60%,transparent);opacity:.85;
+    animation:float linear infinite}
+  @keyframes float{0%{transform:translateY(6vh) scale(.6);opacity:0}20%{opacity:.9}100%{transform:translateY(-10vh) scale(1);opacity:0}}
+
+  /* final fade */
+  .fade{position:absolute;inset:0;background:#0b0714;opacity:0;z-index:9;pointer-events:none;animation:fade .8s ease-in forwards;animation-delay:5.4s}
+  @keyframes fade{to{opacity:1}}
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="parts" id="parts"></div>
+
+    <!-- SCENE A: exact onboarding screen -->
+    <div class="sceneA">
+      <div class="phone"><div class="glass"></div>
+        <div class="screen">
+          <div class="owl">🦉</div>
+          <div class="hi">Hi! I'm Gyaan 🦉</div>
+          <div class="sub">Welcome to <b>GK Quest</b> — your 90-day knowledge adventure!</div>
+          <div class="bullets">
+            <div><span>🗓️</span><span>Play one fun quest every day — just 10–15 questions.</span></div>
+            <div><span>⭐</span><span>Earn stars, coins and cool badges as you go.</span></div>
+            <div><span>👑</span><span>Grow from GK Rookie all the way to Grandmaster!</span></div>
+            <div><span>💡</span><span>Every answer teaches you a new 'Did you know?' fact.</span></div>
+          </div>
+          <div class="label">What should I call you?</div>
+          <div class="input">Your name</div>
+          <div class="cta">Start the Adventure ▶</div>
+          <div class="skip">Skip for now</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="burst"><div class="ring"></div></div>
+
+    <!-- SCENE B: promo end card -->
+    <div class="sceneB">
+      <div class="glowb"></div>
+      <div class="cfB" id="cfB"></div>
+      <div class="phone"><div class="glass"></div>
+        <div class="screen">
+          <div class="owl">🦉</div>
+          <div class="hi">Hi! I'm Gyaan</div>
+          <div class="sub">Welcome to <b>GK Quest</b> — your 90-day knowledge adventure!</div>
+          <div class="bullets">
+            <div>🗓️ One fun quest every day</div>
+            <div>⭐ Earn stars, coins &amp; badges</div>
+            <div>👑 Rookie → Grandmaster</div>
+            <div>💡 A new fact every answer</div>
+          </div>
+          <div class="cta">Start the Adventure ▶</div>
+        </div>
+      </div>
+      <div class="tagline"><div class="l"><span>Learn GK.</span><span>Play Smart.</span><span class="y">Become Extraordinary.</span></div></div>
+      <div class="logo">🦉 GK Quest</div>
+    </div>
+
+    <div class="fade"></div>
+  </div>
+
+  <script>
+    // floating particles across the whole scene
+    const parts=document.getElementById('parts');let ph='';
+    for(let i=0;i<26;i++){const x=Math.random()*100,s=3+Math.random()*7,d=3+Math.random()*4,delay=Math.random()*4;
+      ph+=`<span class="p" style="left:${x}%;bottom:-6vh;width:${s}px;height:${s}px;animation-duration:${d}s;animation-delay:${delay}s"></span>`;}
+    parts.innerHTML=ph;
+    // confetti for scene B
+    const cfB=document.getElementById('cfB');const cols=['#facc15','#fb7185','#22d3ee','#34d399','#a78bfa','#fb923c','#fff'];let cf='';
+    for(let i=0;i<60;i++){const x=Math.random()*100,y=Math.random()*100,w=6+Math.random()*9,h=8+Math.random()*13,r=Math.random()*360,c=cols[i%cols.length],rd=Math.random()>.6?'50%':'2px';
+      cf+=`<span style="position:absolute;left:${x}%;top:${y}%;width:${w}px;height:${h}px;background:${c};transform:rotate(${r}deg);border-radius:${rd};opacity:.9"></span>`;}
+    cfB.innerHTML=cf;
+    // restart button for easy re-recording: click anywhere to replay
+    document.body.addEventListener('click',()=>location.reload());
+  </script>
+</body>
+</html>

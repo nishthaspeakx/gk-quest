@@ -1,0 +1,125 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Global box-sizing + never allow sideways scroll */
+  html {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  body {
+    @apply font-body text-slate-800 antialiased;
+    /* Soft, cheerful backdrop */
+    background: linear-gradient(160deg, #f5f3ff 0%, #fff7ed 60%, #ecfeff 100%);
+    background-attachment: fixed;
+    /* Dynamic viewport height with a 100vh fallback for older browsers */
+    min-height: 100vh;
+    min-height: 100dvh;
+    /* No accidental text selection or iOS copy/callout menu on game elements */
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+  h1, h2, h3 {
+    @apply font-display;
+  }
+
+  /* Snappy, flash-free taps on every interactive element:
+     - no grey/blue highlight on tap
+     - touch-action: manipulation removes the 300ms mobile tap delay */
+  button,
+  a,
+  [role='button'],
+  label,
+  summary,
+  input,
+  select,
+  textarea {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  /* But real text fields must still allow selecting/editing text normally */
+  input,
+  textarea {
+    -webkit-user-select: text;
+    user-select: text;
+    -webkit-touch-callout: default;
+  }
+}
+
+@layer utilities {
+  /* Full-height that respects the iOS dynamic toolbar (dvh) with a vh fallback.
+     Overrides Tailwind's own min-h-screen so every screen benefits. */
+  .min-h-screen {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+  /* Safe-area padding helpers (notch, status bar, home indicator).
+     Put these on an OUTER element and keep base padding on an inner one so
+     they never fight over the same padding property. */
+  .safe-t { padding-top: env(safe-area-inset-top); }
+  .safe-b { padding-bottom: env(safe-area-inset-bottom); }
+  .safe-x {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /* Fluid type that scales with the viewport (shrinks on small phones, capped
+     on big ones) — used for the mascot and big celebration headings. */
+  .fluid-mascot { font-size: clamp(3rem, 14vw, 3.75rem); line-height: 1; }
+  .fluid-mascot-xl { font-size: clamp(3.5rem, 18vw, 6rem); line-height: 1; }
+  .fluid-h1 { font-size: clamp(1.75rem, 7vw, 2.5rem); line-height: 1.1; }
+
+  /* Shared content-width cap: phone-first, never stretches awkwardly wide. */
+  .app-container { width: 100%; max-width: 30rem; margin-left: auto; margin-right: auto; }
+
+  /* Text that sits directly on the page background (NOT inside a white card).
+     On light themes it reads as normal slate; on dark themes (body.theme-dark)
+     it switches to a light colour so it stays readable. Use on loose headings/
+     captions that would otherwise vanish on the dark "Space" theme. */
+  .on-bg-strong { color: #334155; } /* slate-700 */
+  .on-bg-muted  { color: #64748b; } /* slate-500 */
+  .theme-dark .on-bg-strong { color: #f8fafc; }
+  .theme-dark .on-bg-muted  { color: #cbd5e1; }
+}
+
+@layer components {
+  /* Big, tappable, tactile primary button */
+  .btn-fun {
+    @apply font-display font-bold text-white text-xl px-8 py-4 rounded-2xl
+           shadow-pop active:translate-y-1 active:shadow-none
+           transition-all duration-100 select-none;
+  }
+  .btn-primary {
+    @apply btn-fun bg-brand-purple hover:bg-brand-indigo;
+  }
+  .btn-success {
+    @apply btn-fun bg-brand-green hover:bg-brand-teal;
+  }
+  .btn-answer {
+    @apply font-body font-semibold text-lg w-full text-left px-6 py-4 rounded-2xl
+           bg-white border-4 border-slate-100 shadow-pop
+           active:translate-y-1 active:shadow-none transition-all duration-100;
+  }
+  /* Friendly rounded content card */
+  .card-fun {
+    @apply bg-white/90 backdrop-blur rounded-3xl shadow-card p-6;
+  }
+  /* Little pill for stats (coins, streak, level) */
+  .pill {
+    @apply inline-flex items-center gap-1.5 font-display font-bold
+           px-4 py-2 rounded-full text-white shadow-pop;
+  }
+}
