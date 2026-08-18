@@ -38,6 +38,9 @@ export default defineConfig({
         // (and all question data) works fully offline after first load.
         globPatterns: ['**/*.{js,css,html,svg,png,json,woff2}'],
         navigateFallback: base + 'index.html',
+        // Don't let the SPA fallback swallow standalone pages like the iPhone
+        // demo (phone.html) — serve them as-is instead of the app shell.
+        navigateFallbackDenylist: [/phone\.html$/],
         runtimeCaching: [
           {
             // Cache Google Fonts so the playful fonts survive offline too.
